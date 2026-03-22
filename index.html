@@ -32,7 +32,8 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* Dark palette (default) */
+  /* --- Palette --- */
+
   :root {
     --bg: #0a0a0a;
     --fg: #c8c8c8;
@@ -43,28 +44,26 @@
     --border: #282828;
   }
 
-  /* Light palette — system preference */
+  /* Light palette (duplicated: media query + attribute can't be combined) */
   @media (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
       --bg: #f5f2ed; --fg: #4a453e; --fg-bright: #1c1a17; --fg-dim: #736b60;
       --green: #2a7a1a; --green-dim: #2e7d1e; --border: #d8d3cb;
     }
   }
-
-  /* Light palette — manual toggle */
   :root[data-theme="light"] {
     --bg: #f5f2ed; --fg: #4a453e; --fg-bright: #1c1a17; --fg-dim: #736b60;
     --green: #2a7a1a; --green-dim: #2e7d1e; --border: #d8d3cb;
   }
+
+  /* --- Base --- */
 
   ::selection {
     background: var(--green);
     color: var(--bg);
   }
 
-  html {
-    background: var(--bg);
-  }
+  html { background: var(--bg); }
 
   body {
     font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
@@ -80,11 +79,6 @@
     -webkit-font-smoothing: antialiased;
     cursor: default;
     caret-color: transparent;
-  }
-
-  .prompt {
-    color: var(--green);
-    user-select: none;
   }
 
   a {
@@ -103,7 +97,32 @@
     outline-offset: 3px;
   }
 
-  /* --- Cursor blink --- */
+  h1 {
+    color: var(--fg-bright);
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  p { margin-bottom: 12px; }
+
+  section { margin-bottom: 32px; }
+
+  .comment {
+    color: var(--fg-dim);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* --- Prompt & typing cursor --- */
+
+  .prompt-line { margin-bottom: 32px; }
+
+  .prompt {
+    color: var(--green);
+    user-select: none;
+  }
+
   @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
@@ -117,7 +136,6 @@
     vertical-align: text-bottom;
     animation: blink 1s step-end infinite;
     margin-left: 1px;
-    transition: opacity 0.3s;
   }
 
   .cursor.done {
@@ -128,19 +146,12 @@
     overflow: hidden;
   }
 
-  /* --- Screen scan reveal --- */
+  /* --- Scan reveal --- */
+
   @keyframes scanReveal {
-    0% {
-      clip-path: inset(0 0 100% 0);
-      opacity: 0;
-    }
-    10% {
-      opacity: 1;
-    }
-    100% {
-      clip-path: inset(0 0 0% 0);
-      opacity: 1;
-    }
+    0% { clip-path: inset(0 0 100% 0); opacity: 0; }
+    10% { opacity: 1; }
+    100% { clip-path: inset(0 0 0% 0); opacity: 1; }
   }
 
   .content { opacity: 0; }
@@ -155,51 +166,9 @@
   .content.visible .d5 { animation-delay: 0.8s; }
   .content.visible .d6 { animation-delay: 1.0s; }
 
-  /* --- Reduced motion --- */
-  @media (prefers-reduced-motion: reduce) {
-    .content { opacity: 1; }
-    .content .line { opacity: 1; animation: none; }
-    .cursor { animation: none; opacity: 1; }
-    .cursor.done { opacity: 0; }
-  }
-
-  /* --- Prompt --- */
-  .prompt-line {
-    margin-bottom: 32px;
-  }
-
-  .typed {
-    color: var(--fg);
-  }
-
-  .comment {
-    color: var(--fg-dim);
-    display: block;
-    margin-bottom: 8px;
-  }
-
-  /* --- Sections --- */
-  section {
-    margin-bottom: 32px;
-  }
-
-  p {
-    margin-bottom: 12px;
-    color: var(--fg);
-  }
-
-  h1 {
-    color: var(--fg-bright);
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 2px;
-  }
-
   /* --- Experience --- */
-  .exp {
-    list-style: none;
-    padding: 0;
-  }
+
+  .exp { list-style: none; padding: 0; }
 
   .exp li {
     padding: 4px 0;
@@ -207,9 +176,7 @@
     gap: 8px;
   }
 
-  .exp li + li {
-    border-top: 1px solid var(--border);
-  }
+  .exp li + li { border-top: 1px solid var(--border); }
 
   .exp-where {
     color: var(--fg-bright);
@@ -218,27 +185,16 @@
     flex-shrink: 0;
   }
 
-  .exp-what {
-    color: var(--fg-dim);
-  }
+  .exp-what { color: var(--fg-dim); }
 
   /* --- Now --- */
-  .now-list {
-    list-style: none;
-    padding: 0;
-  }
 
-  .now-list li {
-    padding: 2px 0;
-    color: var(--fg);
-  }
-
-  .now-list li::before {
-    content: "→ ";
-    color: var(--fg-dim);
-  }
+  .now-list { list-style: none; padding: 0; }
+  .now-list li { padding: 2px 0; }
+  .now-list li::before { content: "→ "; color: var(--fg-dim); }
 
   /* --- Quotes --- */
+
   .quote {
     padding: 4px 0 4px 16px;
     border-left: 2px solid var(--fg-dim);
@@ -246,24 +202,13 @@
     font-style: italic;
   }
 
-  .quotes-row {
-    display: flex;
-    gap: 12px;
-  }
+  .quotes-row { display: flex; gap: 12px; }
+  .quotes-row .quote { flex: 1; }
+  .quote a { color: var(--fg-dim); }
+  .quote a:hover { color: var(--green); }
 
-  .quotes-row .quote {
-    flex: 1;
-  }
+  /* --- Links --- */
 
-  .quote a {
-    color: var(--fg-dim);
-  }
-
-  .quote a:hover {
-    color: var(--green);
-  }
-
-  /* --- Social --- */
   .links {
     list-style: none;
     padding: 0;
@@ -272,20 +217,12 @@
     gap: 4px 20px;
   }
 
-  .links a {
-    color: var(--fg);
-  }
-
-  .links a::before {
-    content: "→ ";
-    color: var(--fg-dim);
-  }
-
-  .links a:hover {
-    color: var(--green);
-  }
+  .links a { color: var(--fg); }
+  .links a::before { content: "→ "; color: var(--fg-dim); }
+  .links a:hover { color: var(--green); }
 
   /* --- Theme toggle --- */
+
   .theme-toggle {
     position: fixed;
     top: 20px;
@@ -308,6 +245,7 @@
   }
 
   /* --- Footer --- */
+
   footer {
     margin-top: 48px;
     font-size: 11px;
@@ -315,15 +253,24 @@
   }
 
   /* --- Mobile --- */
+
   @media (max-width: 480px) {
     body { font-size: 13px; }
     .exp li { flex-direction: column; gap: 0; }
     .exp-where { min-width: unset; }
     .quotes-row { flex-direction: column; gap: 6px; }
   }
+
+  /* --- Reduced motion --- */
+
+  @media (prefers-reduced-motion: reduce) {
+    .content { opacity: 1; }
+    .content .line { opacity: 1; animation: none; }
+    .cursor { animation: none; opacity: 1; }
+    .cursor.done { opacity: 0; }
+  }
 </style>
 <script>
-  // Theme from localStorage before first paint
   var t = localStorage.getItem('theme');
   if (t) document.documentElement.setAttribute('data-theme', t);
 </script>
@@ -352,7 +299,7 @@
 </head>
 <body>
 
-<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">light</button>
+<button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">light</button>
 
 <div class="prompt-line" role="presentation" aria-hidden="true">
   <span class="prompt">$</span> <span class="typed" id="typed"></span><span class="cursor" id="cursor"></span>
@@ -439,13 +386,10 @@
 
 <script>
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // --- Typing animation ---
   var text = 'cat about.txt';
   var el = document.getElementById('typed');
   var content = document.getElementById('content');
   var cursor = document.getElementById('cursor');
-  var i = 0;
 
   function getDelay(char, next) {
     if (char === ' ') return 120 + Math.random() * 80;
@@ -459,7 +403,7 @@
     content.classList.add('visible');
     cursor.classList.add('done');
   } else {
-    // Typing after a short delay
+    var i = 0;
     setTimeout(function type() {
       if (i < text.length) {
         el.textContent += text[i];
@@ -476,7 +420,7 @@
     }, 300);
   }
 
-  // --- Theme toggle ---
+  // Theme toggle
   var toggle = document.getElementById('themeToggle');
   var root = document.documentElement;
 
