@@ -4,146 +4,289 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Utku Arslan</title>
+<meta name="description" content="ML engineer building at the intersection of climate-tech, web3 and LLM-powered products. MS in Machine Learning at Georgia Tech.">
+<meta property="og:title" content="Utku Arslan">
+<meta property="og:description" content="ML engineer building at the intersection of climate-tech, web3 and LLM-powered products.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>_</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --fg: #b0b0b0;
+    --fg-bright: #e0e0e0;
+    --fg-dim: #555;
+    --green: #4af626;
+    --green-dim: #2a8a16;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #fafafa;
+      --fg: #555;
+      --fg-bright: #1a1a1a;
+      --fg-dim: #aaa;
+      --green: #1a7a10;
+      --green-dim: #88bb80;
+    }
+  }
+
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-    max-width: 560px;
+    font-family: 'JetBrains Mono', monospace;
+    max-width: 620px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 24px;
     padding-top: clamp(40px, 8vh, 80px);
     padding-bottom: clamp(40px, 8vh, 80px);
-    background: #fdfdfc;
-    color: #222;
-    font-size: 15px;
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 13px;
     line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
   }
 
-  h1 {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 2px;
+  /* --- Cursor blink --- */
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
 
-  .sub {
-    color: #777;
-    font-size: 14px;
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 2px;
+    background: var(--green);
+    vertical-align: baseline;
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+  }
+
+  /* --- Fade in --- */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .line { opacity: 0; animation: fadeIn 0.3s ease forwards; }
+  .d1 { animation-delay: 0.05s; }
+  .d2 { animation-delay: 0.1s; }
+  .d3 { animation-delay: 0.15s; }
+  .d4 { animation-delay: 0.2s; }
+  .d5 { animation-delay: 0.25s; }
+  .d6 { animation-delay: 0.3s; }
+  .d7 { animation-delay: 0.35s; }
+
+  /* --- Prompt --- */
+  .prompt {
+    color: var(--green);
+    user-select: none;
+  }
+
+  .comment {
+    color: var(--fg-dim);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* --- Sections --- */
+  section {
     margin-bottom: 32px;
   }
 
-  p { margin-bottom: 16px; color: #333; }
-
-  a { color: #1B5E20; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-
-  .gap { margin-bottom: 32px; }
-
-  .experience {
-    margin: 0 0 16px;
-    padding-left: 1.2em;
-    color: #333;
+  .section-head {
+    color: var(--fg-dim);
+    margin-bottom: 8px;
+    font-size: 11px;
+    letter-spacing: 0.05em;
   }
 
-  .experience li {
-    margin-bottom: 10px;
+  p {
+    margin-bottom: 12px;
+    color: var(--fg);
   }
 
-  .experience li:last-child {
-    margin-bottom: 0;
-  }
-
-  .quotes {
-    margin: 0 0 16px;
-    padding-left: 1.2em;
-    color: #333;
-  }
-
-  .quotes li {
-    margin-bottom: 10px;
-  }
-
-  .quotes li:last-child {
-    margin-bottom: 0;
-  }
-
-  a.quote-line {
-    color: #1B5E20;
-    font-style: italic;
+  /* --- Links --- */
+  a {
+    color: var(--green);
     text-decoration: none;
   }
 
-  a.quote-line:hover {
+  a:hover {
     text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
+  /* --- Experience --- */
+  .exp {
+    list-style: none;
+    padding: 0;
+  }
+
+  .exp li {
+    padding: 4px 0;
+    display: flex;
+    gap: 8px;
+  }
+
+  .exp li + li {
+    border-top: 1px solid #1a1a1a;
+  }
+
+  @media (prefers-color-scheme: light) {
+    .exp li + li { border-top-color: #e8e8e8; }
+  }
+
+  .exp-where {
+    color: var(--fg-bright);
+    font-weight: 700;
+    min-width: 160px;
+    flex-shrink: 0;
+  }
+
+  .exp-what {
+    color: var(--fg-dim);
+  }
+
+  /* --- Quotes --- */
+  .quote {
+    padding: 4px 0 4px 16px;
+    border-left: 2px solid var(--fg-dim);
+    color: var(--fg-dim);
+    font-style: italic;
+  }
+
+  .quotes-row {
+    display: flex;
+    gap: 12px;
+  }
+
+  .quotes-row .quote {
+    flex: 1;
+  }
+
+  .quote a {
+    color: var(--fg-dim);
+  }
+
+  .quote a:hover {
+    color: var(--green);
+  }
+
+  /* --- Social --- */
   .links {
     list-style: none;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 16px;
-    font-size: 14px;
+    gap: 4px 20px;
   }
 
-  .links a { color: #555; }
-  .links a:hover { color: #1B5E20; }
+  .links a {
+    color: var(--fg);
+  }
 
-  .foot {
+  .links a:hover {
+    color: var(--green);
+  }
+
+  .links a::before {
+    content: "→ ";
+    color: var(--fg-dim);
+  }
+
+  /* --- Footer --- */
+  footer {
     margin-top: 48px;
-    font-size: 12px;
-    color: #bbb;
+    font-size: 11px;
+    color: var(--fg-dim);
+  }
+
+  /* --- Mobile --- */
+  @media (max-width: 480px) {
+    body { font-size: 13px; }
+    .exp li { flex-direction: column; gap: 0; }
+    .exp-where { min-width: unset; }
   }
 </style>
 </head>
 <body>
 
-<h1>Utku Arslan</h1>
-<div class="sub">I like to build products that solve real-life problems</div>
+<section class="line d1">
+  <span class="prompt">$</span> cat about.txt<span class="cursor"></span>
+</section>
 
-<p>
-  I started working with data and ML systems in 2017 with cybersecurity, robotics and gaming.
-  Later I realized I care about the impact more than having fun.
-  Currently I have three main core areas: climate-tech, web3 and LLM-powered apps; and I'm doing an MS in Machine Learning at Georgia Tech.
-</p>
+<section class="line d2">
+  <p>
+    <strong style="color: var(--fg-bright); font-size: 15px;">Utku Arslan</strong><br>
+    <span class="comment"># ml engineer / climate-tech / web3 / llm-powered products</span>
+  </p>
+  <p>
+    I started working with data and ML systems in 2017 — cybersecurity, robotics, gaming.
+    Over time I realized I care about impact more than novelty.
+    Today my work sits at the intersection of climate-tech, web3, and LLM-powered applications.
+    Currently doing an MS in Machine Learning at Georgia Tech.
+  </p>
+</section>
 
-<div class="gap"></div>
+<section class="line d3">
+  <span class="comment" style="color: var(--green-dim)">// experience</span>
+  <ul class="exp">
+    <li>
+      <span class="exp-where">J&amp;J</span>
+      <span class="exp-what">forecasting immune-cell growth for production</span>
+    </li>
+    <li>
+      <span class="exp-where">Poiesy Biotech</span>
+      <span class="exp-what">predictive models for bone marrow transplant outcomes</span>
+    </li>
+    <li>
+      <span class="exp-where">UN University</span>
+      <span class="exp-what">climate risk analysis with satellite &amp; GIS data</span>
+    </li>
+    <li>
+      <span class="exp-where">SwarmLab</span>
+      <span class="exp-what">swarm drone robotics research</span>
+    </li>
+    <li>
+      <span class="exp-where">Eurosis</span>
+      <span class="exp-what">vision, analytics, ML and LLM tooling</span>
+    </li>
+  </ul>
+</section>
 
-<p>Previously I've worked at:</p>
+<section class="line d4">
+  <span class="comment" style="color: var(--green-dim)">// beyond work</span>
+  <p>
+    I started traveling young and never stopped.
+    I hike jungles, dive oceans, ride shitty motorbikes on even shittier roads, do handstands for no reason.
+    I take photos along the way (<a href="https://www.instagram.com/eyeofutku">@eyeofutku</a>) and make music when the mood hits (<a href="https://open.spotify.com/artist/7zvy8a4pYZTnRI2SZ1Wc3T">spotify</a>).
+    I read history and Stoic/Zen philosophy, my favorite quotes:
+  </p>
+  <div class="quotes-row">
+    <div class="quote"><a href="https://en.wikipedia.org/wiki/Panta_rhei_(doctrine)">"Panta rhei."<br>— Heraclitus</a></div>
+    <div class="quote"><a href="https://en.wikipedia.org/wiki/Esse_quam_videri">"Esse quam videri."<br>— Cicero</a></div>
+  </div>
+</section>
 
-<ul class="experience">
-  <li>Biotech: J&amp;J (forecasting immune-cell growth for production), Poiesy Biotech (models for bone marrow transplant outcomes)</li>
-  <li>Academia/NGOs: United Nations University (climate risk with satellite and GIS data), SwarmLab (swarm drone robotics)</li>
-  <li>Consulting: Eurosis Consulting (building vision, analytics ML and LLM tools)</li>
-</ul>
+<section class="line d5">
+  <span class="comment" style="color: var(--green-dim)">// links</span>
+  <ul class="links">
+    <li><a href="mailto:hi@utkuarslan.dev">email</a></li>
+    <li><a href="https://www.linkedin.com/in/utkuarslandev">linkedin</a></li>
+    <li><a href="https://github.com/utkuarslandev">github</a></li>
+    <li><a href="https://www.instagram.com/eyeofutku">instagram</a></li>
+    <li><a href="https://open.spotify.com/artist/7zvy8a4pYZTnRI2SZ1Wc3T">spotify</a></li>
+  </ul>
+</section>
 
-<div class="gap"></div>
-
-<p>
-  On the side, I started traveling young and never stopped.
-  I hike jungles, dive oceans, ride shitty motorbikes on even shittier roads, do handstands for no reason.
-  I also take photos as I travel (<a href="https://www.instagram.com/eyeofutku">@eyeofutku</a>) and I make music when the mood hits (<a href="https://open.spotify.com/artist/7zvy8a4pYZTnRI2SZ1Wc3T">Spotify</a>).
-  I like to also read history and Stoic/Zen philosophy. My favorite quotes are:
-</p>
-
-<ul class="quotes">
-  <li><a class="quote-line" href="https://en.wikipedia.org/wiki/Panta_rhei_(doctrine)">"Panta rhei." — Heraclitus</a></li>
-  <li><a class="quote-line" href="https://en.wikipedia.org/wiki/Esse_quam_videri">"Esse quam videri." — Cicero</a></li>
-</ul>
-
-<div class="gap"></div>
-
-<p>
-  I'm open to collaborating or connecting with people, say hi at <a href="mailto:hi@utkuarslan.dev">hi@utkuarslan.dev</a>.
-</p>
-
-<ul class="links">
-  <li><a href="mailto:hi@utkuarslan.dev">email</a></li>
-  <li><a href="https://www.linkedin.com/in/utkuarslandev">linkedin</a></li>
-  <li><a href="https://github.com/utkuarslandev">github</a></li>
-  <li><a href="https://www.instagram.com/eyeofutku">instagram</a></li>
-  <li><a href="https://open.spotify.com/artist/7zvy8a4pYZTnRI2SZ1Wc3T">spotify</a></li>
-</ul>
-
-<div class="foot">.</div>
+<footer class="line d6">
+  <span class="comment">[process exited with code 0]</span>
+</footer>
 
 </body>
 </html>
