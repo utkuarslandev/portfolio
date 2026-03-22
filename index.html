@@ -78,6 +78,7 @@
     font-size: 13px;
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    caret-color: transparent;
   }
 
   .prompt {
@@ -550,23 +551,30 @@
 
   function placeCursorAtClick(e) {
     if (reduced) return;
-    if (e.target.closest('#themeToggle')) return;
     if (e.target.closest('a[href]')) return;
     if (e.target.closest('button')) return;
 
-    var target = e.target;
-    if (!content.contains(target) && !(promptLine && promptLine.contains(target))) return;
-    if (content.contains(target) && !content.classList.contains('visible')) return;
-
     var range = getCaretRange(e.clientX, e.clientY);
-    if (!range) return;
-
-    saveCaretFromRange(range);
-    removeFloatingCursor();
-    floatingCursor = document.createElement('span');
-    floatingCursor.className = 'cursor floating';
-    document.body.appendChild(floatingCursor);
-    repositionFloatingCursor();
+    if (range) {
+      saveCaretFromRange(range);
+      removeFloatingCursor();
+      floatingCursor = document.createElement('span');
+      floatingCursor.className = 'cursor floating';
+      document.body.appendChild(floatingCursor);
+      repositionFloatingCursor();
+    } else {
+      // Clicked on empty space — place cursor at click coordinates
+      removeFloatingCursor();
+      floatingCursor = document.createElement('span');
+      floatingCursor.className = 'cursor floating';
+      document.body.appendChild(floatingCursor);
+      var fs = parseFloat(getComputedStyle(document.body).fontSize) || 13;
+      floatingCursor.style.width = Math.max(fs * 0.6, 8) + 'px';
+      floatingCursor.style.height = (fs * 1.15) + 'px';
+      floatingCursor.style.left = e.clientX + 'px';
+      floatingCursor.style.top = e.clientY + 'px';
+      savedCaret = null;
+    }
   }
 
   document.addEventListener('click', placeCursorAtClick);
