@@ -32,6 +32,7 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* Dark palette (default) */
   :root {
     --bg: #0a0a0a;
     --fg: #c8c8c8;
@@ -42,41 +43,27 @@
     --border: #282828;
   }
 
+  /* Light palette — system preference */
   @media (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
-      --bg: #f5f2ed;
-      --fg: #4a453e;
-      --fg-bright: #1c1a17;
-      --fg-dim: #8a8378;
-      --green: #2a7a1a;
-      --green-dim: #5a9a4a;
-      --border: #d8d3cb;
+      --bg: #f5f2ed; --fg: #4a453e; --fg-bright: #1c1a17; --fg-dim: #736b60;
+      --green: #2a7a1a; --green-dim: #2e7d1e; --border: #d8d3cb;
     }
   }
 
+  /* Light palette — manual toggle */
   :root[data-theme="light"] {
-    --bg: #f5f2ed;
-    --fg: #4a453e;
-    --fg-bright: #1c1a17;
-    --fg-dim: #8a8378;
-    --green: #2a7a1a;
-    --green-dim: #5a9a4a;
-    --border: #d8d3cb;
-  }
-
-  :root[data-theme="dark"] {
-    --bg: #0a0a0a;
-    --fg: #c8c8c8;
-    --fg-bright: #efefef;
-    --fg-dim: #707070;
-    --green: #4af626;
-    --green-dim: #3aaa22;
-    --border: #282828;
+    --bg: #f5f2ed; --fg: #4a453e; --fg-bright: #1c1a17; --fg-dim: #736b60;
+    --green: #2a7a1a; --green-dim: #2e7d1e; --border: #d8d3cb;
   }
 
   ::selection {
     background: var(--green);
     color: var(--bg);
+  }
+
+  html {
+    background: var(--bg);
   }
 
   body {
@@ -91,6 +78,27 @@
     font-size: 13px;
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+  }
+
+  .prompt {
+    color: var(--green);
+    user-select: none;
+  }
+
+  a {
+    color: var(--green);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--green);
+    outline-offset: 3px;
   }
 
   /* --- Cursor blink --- */
@@ -110,25 +118,48 @@
     transition: opacity 0.3s;
   }
 
+  .cursor.floating {
+    position: fixed;
+    margin: 0;
+    z-index: 100;
+    pointer-events: none;
+    vertical-align: top;
+  }
+
   .cursor.done {
     opacity: 0;
     animation: none;
+    width: 0;
+    margin: 0;
+    overflow: hidden;
   }
 
-  /* --- Fade in --- */
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  /* --- Screen scan reveal --- */
+  @keyframes scanReveal {
+    0% {
+      clip-path: inset(0 0 100% 0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    100% {
+      clip-path: inset(0 0 0% 0);
+      opacity: 1;
+    }
   }
 
   .content { opacity: 0; }
-  .content.visible .line { opacity: 0; animation: fadeIn 0.3s ease forwards; }
+  .content.visible .line {
+    opacity: 0;
+    animation: scanReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
   .content.visible .d1 { animation-delay: 0s; }
-  .content.visible .d2 { animation-delay: 0.15s; }
-  .content.visible .d3 { animation-delay: 0.3s; }
-  .content.visible .d4 { animation-delay: 0.45s; }
-  .content.visible .d5 { animation-delay: 0.6s; }
-  .content.visible .d6 { animation-delay: 0.75s; }
+  .content.visible .d2 { animation-delay: 0.2s; }
+  .content.visible .d3 { animation-delay: 0.4s; }
+  .content.visible .d4 { animation-delay: 0.6s; }
+  .content.visible .d5 { animation-delay: 0.8s; }
+  .content.visible .d6 { animation-delay: 1.0s; }
 
   /* --- Reduced motion --- */
   @media (prefers-reduced-motion: reduce) {
@@ -141,11 +172,6 @@
   /* --- Prompt --- */
   .prompt-line {
     margin-bottom: 32px;
-  }
-
-  .prompt {
-    color: var(--green);
-    user-select: none;
   }
 
   .typed {
@@ -173,17 +199,6 @@
     font-size: 15px;
     font-weight: 700;
     margin-bottom: 2px;
-  }
-
-  /* --- Links --- */
-  a {
-    color: var(--green);
-    text-decoration: none;
-  }
-
-  a:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
   }
 
   /* --- Experience --- */
@@ -267,13 +282,13 @@
     color: var(--fg);
   }
 
-  .links a:hover {
-    color: var(--green);
-  }
-
   .links a::before {
     content: "→ ";
     color: var(--fg-dim);
+  }
+
+  .links a:hover {
+    color: var(--green);
   }
 
   /* --- Theme toggle --- */
@@ -313,6 +328,11 @@
     .quotes-row { flex-direction: column; gap: 6px; }
   }
 </style>
+<script>
+  // Theme from localStorage before first paint
+  var t = localStorage.getItem('theme');
+  if (t) document.documentElement.setAttribute('data-theme', t);
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -407,6 +427,7 @@
 
 <section class="line d5">
   <span class="comment" style="color: var(--green-dim)">// links</span>
+  <p>Open to collaborating, connecting, or just saying hi.</p>
   <ul class="links">
     <li><a href="mailto:hi@utkuarslan.dev">email</a></li>
     <li><a href="https://www.linkedin.com/in/utkuarslandev">linkedin</a></li>
@@ -423,20 +444,18 @@
 </div>
 
 <script>
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   // --- Typing animation ---
   var text = 'cat about.txt';
   var el = document.getElementById('typed');
   var content = document.getElementById('content');
   var cursor = document.getElementById('cursor');
   var i = 0;
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function getDelay(char, next) {
-    // pause longer after space (like a real typist thinking)
     if (char === ' ') return 120 + Math.random() * 80;
-    // slight hesitation before punctuation
     if (next === '.') return 100 + Math.random() * 60;
-    // base keystroke: irregular, 40-110ms
     return 40 + Math.random() * 70;
   }
 
@@ -446,7 +465,7 @@
     content.classList.add('visible');
     cursor.classList.add('done');
   } else {
-    // initial pause — like the terminal just opened
+    // Typing after a short delay
     setTimeout(function type() {
       if (i < text.length) {
         el.textContent += text[i];
@@ -454,20 +473,116 @@
         i++;
         setTimeout(type, delay);
       } else {
-        // "enter" pause before output appears
         setTimeout(function() {
           cursor.classList.add('done');
           content.style.opacity = '1';
           content.classList.add('visible');
         }, 300);
       }
-    }, 600);
+    }, 300);
   }
+
+  // --- Click to place caret (same blink style) ---
+  var savedCaret = null;
+  var floatingCursor = null;
+  var promptLine = document.querySelector('.prompt-line');
+
+  function getCaretRange(clientX, clientY) {
+    if (document.caretRangeFromPoint) {
+      try {
+        var r = document.caretRangeFromPoint(clientX, clientY);
+        if (r) {
+          var copy = r.cloneRange();
+          copy.collapse(true);
+          return copy;
+        }
+      } catch (e) {}
+    }
+    if (document.caretPositionFromPoint) {
+      try {
+        var pos = document.caretPositionFromPoint(clientX, clientY);
+        if (!pos || !pos.offsetNode) return null;
+        var range = document.createRange();
+        range.setStart(pos.offsetNode, pos.offset);
+        range.collapse(true);
+        return range;
+      } catch (e2) {}
+    }
+    return null;
+  }
+
+  function saveCaretFromRange(range) {
+    var node = range.startContainer;
+    var offset = range.startOffset;
+    // Store as character offset within content/promptLine for resilience
+    savedCaret = { node: node, offset: offset };
+  }
+
+  function removeFloatingCursor() {
+    if (floatingCursor && floatingCursor.parentNode) {
+      floatingCursor.parentNode.removeChild(floatingCursor);
+    }
+    floatingCursor = null;
+    savedCaret = null;
+  }
+
+  function repositionFloatingCursor() {
+    if (!savedCaret || !floatingCursor) return;
+    var range = document.createRange();
+    try {
+      range.setStart(savedCaret.node, savedCaret.offset);
+      range.collapse(true);
+    } catch (err) {
+      removeFloatingCursor();
+      return;
+    }
+    var rect = range.getBoundingClientRect();
+    var rects = range.getClientRects();
+    if (!rect.height && rects.length) rect = rects[0];
+    var fs = parseFloat(getComputedStyle(document.body).fontSize) || 13;
+    var h = rect.height > 2 ? rect.height : fs * 1.15;
+    var w = Math.max(fs * 0.6, 8);
+    floatingCursor.style.width = w + 'px';
+    floatingCursor.style.height = h + 'px';
+    floatingCursor.style.left = rect.left + 'px';
+    floatingCursor.style.top = rect.top + 'px';
+  }
+
+  function placeCursorAtClick(e) {
+    if (reduced) return;
+    if (e.target.closest('#themeToggle')) return;
+    if (e.target.closest('a[href]')) return;
+    if (e.target.closest('button')) return;
+
+    var target = e.target;
+    if (!content.contains(target) && !(promptLine && promptLine.contains(target))) return;
+    if (content.contains(target) && !content.classList.contains('visible')) return;
+
+    var range = getCaretRange(e.clientX, e.clientY);
+    if (!range) return;
+
+    saveCaretFromRange(range);
+    removeFloatingCursor();
+    floatingCursor = document.createElement('span');
+    floatingCursor.className = 'cursor floating';
+    document.body.appendChild(floatingCursor);
+    repositionFloatingCursor();
+  }
+
+  document.addEventListener('click', placeCursorAtClick);
+
+  var scrollTick = 0;
+  function onScrollOrResize() {
+    if (!floatingCursor) return;
+    cancelAnimationFrame(scrollTick);
+    scrollTick = requestAnimationFrame(repositionFloatingCursor);
+  }
+  window.addEventListener('scroll', onScrollOrResize, true);
+  window.addEventListener('resize', onScrollOrResize);
 
   // --- Theme toggle ---
   var toggle = document.getElementById('themeToggle');
   var root = document.documentElement;
-  var saved = localStorage.getItem('theme');
 
   function isDark() {
     var theme = root.getAttribute('data-theme');
@@ -476,12 +591,11 @@
   }
 
   function updateLabel() {
-    toggle.textContent = isDark() ? 'light' : 'dark';
+    var dark = isDark();
+    toggle.textContent = dark ? 'light' : 'dark';
+    toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
   }
 
-  if (saved) {
-    root.setAttribute('data-theme', saved);
-  }
   updateLabel();
 
   toggle.addEventListener('click', function() {
