@@ -3,12 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Utku Arslan</title>
-<meta name="description" content="ML engineer building at the intersection of climate-tech, web3 and LLM-powered products. MS in Machine Learning at Georgia Tech.">
-<meta property="og:title" content="Utku Arslan">
-<meta property="og:description" content="ML engineer building at the intersection of climate-tech, web3 and LLM-powered products.">
+<title>Utku Arslan — ML Engineer | Climate-Tech, Web3 & LLM Products</title>
+<meta name="description" content="Utku Arslan is an ML engineer building climate-tech, web3 and LLM-powered products. Previously at J&J, UN University, Poiesy Biotech. MS in Machine Learning at Georgia Tech.">
+<meta name="keywords" content="Utku Arslan, ML engineer, machine learning, climate-tech, web3, LLM, Georgia Tech, AI engineer">
+<meta name="author" content="Utku Arslan">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://utkuarslan.dev">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Utku Arslan — ML Engineer">
+<meta property="og:description" content="ML engineer building climate-tech, web3 and LLM-powered products. Previously at J&J, UN University, Poiesy Biotech.">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#0a0a0a">
+<meta property="og:url" content="https://utkuarslan.dev">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Utku Arslan">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Utku Arslan — ML Engineer">
+<meta name="twitter:description" content="ML engineer building climate-tech, web3 and LLM-powered products. MS in Machine Learning at Georgia Tech.">
+
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f5f2ed" media="(prefers-color-scheme: light)">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>_</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,26 +34,53 @@
 
   :root {
     --bg: #0a0a0a;
-    --fg: #b0b0b0;
-    --fg-bright: #e0e0e0;
-    --fg-dim: #555;
+    --fg: #c8c8c8;
+    --fg-bright: #efefef;
+    --fg-dim: #707070;
     --green: #4af626;
-    --green-dim: #2a8a16;
+    --green-dim: #3aaa22;
+    --border: #282828;
   }
 
   @media (prefers-color-scheme: light) {
-    :root {
-      --bg: #fafafa;
-      --fg: #555;
-      --fg-bright: #1a1a1a;
-      --fg-dim: #aaa;
-      --green: #1a7a10;
-      --green-dim: #88bb80;
+    :root:not([data-theme="dark"]) {
+      --bg: #f5f2ed;
+      --fg: #4a453e;
+      --fg-bright: #1c1a17;
+      --fg-dim: #8a8378;
+      --green: #2a7a1a;
+      --green-dim: #5a9a4a;
+      --border: #d8d3cb;
     }
   }
 
+  :root[data-theme="light"] {
+    --bg: #f5f2ed;
+    --fg: #4a453e;
+    --fg-bright: #1c1a17;
+    --fg-dim: #8a8378;
+    --green: #2a7a1a;
+    --green-dim: #5a9a4a;
+    --border: #d8d3cb;
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0a0a0a;
+    --fg: #c8c8c8;
+    --fg-bright: #efefef;
+    --fg-dim: #707070;
+    --green: #4af626;
+    --green-dim: #3aaa22;
+    --border: #282828;
+  }
+
+  ::selection {
+    background: var(--green);
+    color: var(--bg);
+  }
+
   body {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
     max-width: 620px;
     margin: 0 auto;
     padding: 0 24px;
@@ -58,12 +101,18 @@
 
   .cursor {
     display: inline-block;
-    width: 8px;
-    height: 2px;
+    width: 0.6em;
+    height: 1.15em;
     background: var(--green);
-    vertical-align: baseline;
+    vertical-align: text-bottom;
     animation: blink 1s step-end infinite;
-    margin-left: 2px;
+    margin-left: 1px;
+    transition: opacity 0.3s;
+  }
+
+  .cursor.done {
+    opacity: 0;
+    animation: none;
   }
 
   /* --- Fade in --- */
@@ -72,19 +121,35 @@
     to { opacity: 1; }
   }
 
-  .line { opacity: 0; animation: fadeIn 0.3s ease forwards; }
-  .d1 { animation-delay: 0.05s; }
-  .d2 { animation-delay: 0.1s; }
-  .d3 { animation-delay: 0.15s; }
-  .d4 { animation-delay: 0.2s; }
-  .d5 { animation-delay: 0.25s; }
-  .d6 { animation-delay: 0.3s; }
-  .d7 { animation-delay: 0.35s; }
+  .content { opacity: 0; }
+  .content.visible .line { opacity: 0; animation: fadeIn 0.3s ease forwards; }
+  .content.visible .d1 { animation-delay: 0s; }
+  .content.visible .d2 { animation-delay: 0.15s; }
+  .content.visible .d3 { animation-delay: 0.3s; }
+  .content.visible .d4 { animation-delay: 0.45s; }
+  .content.visible .d5 { animation-delay: 0.6s; }
+  .content.visible .d6 { animation-delay: 0.75s; }
+
+  /* --- Reduced motion --- */
+  @media (prefers-reduced-motion: reduce) {
+    .content { opacity: 1; }
+    .content .line { opacity: 1; animation: none; }
+    .cursor { animation: none; opacity: 1; }
+    .cursor.done { opacity: 0; }
+  }
 
   /* --- Prompt --- */
+  .prompt-line {
+    margin-bottom: 32px;
+  }
+
   .prompt {
     color: var(--green);
     user-select: none;
+  }
+
+  .typed {
+    color: var(--fg);
   }
 
   .comment {
@@ -98,16 +163,16 @@
     margin-bottom: 32px;
   }
 
-  .section-head {
-    color: var(--fg-dim);
-    margin-bottom: 8px;
-    font-size: 11px;
-    letter-spacing: 0.05em;
-  }
-
   p {
     margin-bottom: 12px;
     color: var(--fg);
+  }
+
+  h1 {
+    color: var(--fg-bright);
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2px;
   }
 
   /* --- Links --- */
@@ -134,11 +199,7 @@
   }
 
   .exp li + li {
-    border-top: 1px solid #1a1a1a;
-  }
-
-  @media (prefers-color-scheme: light) {
-    .exp li + li { border-top-color: #e8e8e8; }
+    border-top: 1px solid var(--border);
   }
 
   .exp-where {
@@ -149,6 +210,22 @@
   }
 
   .exp-what {
+    color: var(--fg-dim);
+  }
+
+  /* --- Now --- */
+  .now-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .now-list li {
+    padding: 2px 0;
+    color: var(--fg);
+  }
+
+  .now-list li::before {
+    content: "→ ";
     color: var(--fg-dim);
   }
 
@@ -199,6 +276,28 @@
     color: var(--fg-dim);
   }
 
+  /* --- Theme toggle --- */
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--fg-dim);
+    font-family: inherit;
+    font-size: 11px;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: color 0.15s, border-color 0.15s;
+    z-index: 10;
+  }
+
+  .theme-toggle:hover {
+    color: var(--green);
+    border-color: var(--green);
+  }
+
   /* --- Footer --- */
   footer {
     margin-top: 48px;
@@ -211,26 +310,59 @@
     body { font-size: 13px; }
     .exp li { flex-direction: column; gap: 0; }
     .exp-where { min-width: unset; }
+    .quotes-row { flex-direction: column; gap: 6px; }
   }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Utku Arslan",
+  "url": "https://utkuarslan.dev",
+  "email": "hi@utkuarslan.dev",
+  "jobTitle": "ML Engineer",
+  "description": "ML engineer building climate-tech, web3 and LLM-powered products",
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "Georgia Institute of Technology"
+  },
+  "knowsAbout": ["Machine Learning", "Climate Technology", "Web3", "Large Language Models", "Data Science"],
+  "sameAs": [
+    "https://www.linkedin.com/in/utkuarslandev",
+    "https://github.com/utkuarslandev",
+    "https://www.instagram.com/eyeofutku",
+    "https://open.spotify.com/artist/7zvy8a4pYZTnRI2SZ1Wc3T"
+  ]
+}
+</script>
 </head>
 <body>
 
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">light</button>
+
+<div class="prompt-line" role="presentation" aria-hidden="true">
+  <span class="prompt">$</span> <span class="typed" id="typed"></span><span class="cursor" id="cursor"></span>
+</div>
+
+<noscript><style>.content{opacity:1}.content .line{opacity:1;animation:none}.typed::after{content:"cat about.txt"}</style></noscript>
+
+<div class="content" id="content">
+
 <section class="line d1">
-  <span class="prompt">$</span> cat about.txt<span class="cursor"></span>
+  <h1>Utku Arslan</h1>
+  <span class="comment"># ml engineer / climate-tech / web3 / llm-powered products</span>
+  <p>
+    I got into data and ML through cybersecurity, robotics, and gaming back in 2017.
+    Somewhere along the way I stopped chasing what's interesting and started chasing what matters.
+  </p>
 </section>
 
 <section class="line d2">
-  <p>
-    <strong style="color: var(--fg-bright); font-size: 15px;">Utku Arslan</strong><br>
-    <span class="comment"># ml engineer / climate-tech / web3 / llm-powered products</span>
-  </p>
-  <p>
-    I started working with data and ML systems in 2017 — cybersecurity, robotics, gaming.
-    Over time I realized I care about impact more than novelty.
-    Today my work sits at the intersection of climate-tech, web3, and LLM-powered applications.
-    Currently doing an MS in Machine Learning at Georgia Tech.
-  </p>
+  <span class="comment" style="color: var(--green-dim)">// now</span>
+  <ul class="now-list">
+    <li>MS Machine Learning @ Georgia Tech</li>
+    <li>building the future one LLM-generated commit at a time</li>
+  </ul>
 </section>
 
 <section class="line d3">
@@ -287,6 +419,78 @@
 <footer class="line d6">
   <span class="comment">[process exited with code 0]</span>
 </footer>
+
+</div>
+
+<script>
+  // --- Typing animation ---
+  var text = 'cat about.txt';
+  var el = document.getElementById('typed');
+  var content = document.getElementById('content');
+  var cursor = document.getElementById('cursor');
+  var i = 0;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getDelay(char, next) {
+    // pause longer after space (like a real typist thinking)
+    if (char === ' ') return 120 + Math.random() * 80;
+    // slight hesitation before punctuation
+    if (next === '.') return 100 + Math.random() * 60;
+    // base keystroke: irregular, 40-110ms
+    return 40 + Math.random() * 70;
+  }
+
+  if (reduced) {
+    el.textContent = text;
+    content.style.opacity = '1';
+    content.classList.add('visible');
+    cursor.classList.add('done');
+  } else {
+    // initial pause — like the terminal just opened
+    setTimeout(function type() {
+      if (i < text.length) {
+        el.textContent += text[i];
+        var delay = getDelay(text[i], text[i + 1]);
+        i++;
+        setTimeout(type, delay);
+      } else {
+        // "enter" pause before output appears
+        setTimeout(function() {
+          cursor.classList.add('done');
+          content.style.opacity = '1';
+          content.classList.add('visible');
+        }, 300);
+      }
+    }, 600);
+  }
+
+  // --- Theme toggle ---
+  var toggle = document.getElementById('themeToggle');
+  var root = document.documentElement;
+  var saved = localStorage.getItem('theme');
+
+  function isDark() {
+    var theme = root.getAttribute('data-theme');
+    if (theme) return theme === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function updateLabel() {
+    toggle.textContent = isDark() ? 'light' : 'dark';
+  }
+
+  if (saved) {
+    root.setAttribute('data-theme', saved);
+  }
+  updateLabel();
+
+  toggle.addEventListener('click', function() {
+    var next = isDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateLabel();
+  });
+</script>
 
 </body>
 </html>
