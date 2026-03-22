@@ -78,6 +78,7 @@
     font-size: 13px;
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    cursor: default;
     caret-color: transparent;
   }
 
@@ -117,14 +118,6 @@
     animation: blink 1s step-end infinite;
     margin-left: 1px;
     transition: opacity 0.3s;
-  }
-
-  .cursor.floating {
-    position: fixed;
-    margin: 0;
-    z-index: 100;
-    pointer-events: none;
-    vertical-align: top;
   }
 
   .cursor.done {
@@ -482,111 +475,6 @@
       }
     }, 300);
   }
-
-  // --- Click to place caret (same blink style) ---
-  var savedCaret = null;
-  var floatingCursor = null;
-  var promptLine = document.querySelector('.prompt-line');
-
-  function getCaretRange(clientX, clientY) {
-    if (document.caretRangeFromPoint) {
-      try {
-        var r = document.caretRangeFromPoint(clientX, clientY);
-        if (r) {
-          var copy = r.cloneRange();
-          copy.collapse(true);
-          return copy;
-        }
-      } catch (e) {}
-    }
-    if (document.caretPositionFromPoint) {
-      try {
-        var pos = document.caretPositionFromPoint(clientX, clientY);
-        if (!pos || !pos.offsetNode) return null;
-        var range = document.createRange();
-        range.setStart(pos.offsetNode, pos.offset);
-        range.collapse(true);
-        return range;
-      } catch (e2) {}
-    }
-    return null;
-  }
-
-  function saveCaretFromRange(range) {
-    var node = range.startContainer;
-    var offset = range.startOffset;
-    // Store as character offset within content/promptLine for resilience
-    savedCaret = { node: node, offset: offset };
-  }
-
-  function removeFloatingCursor() {
-    if (floatingCursor && floatingCursor.parentNode) {
-      floatingCursor.parentNode.removeChild(floatingCursor);
-    }
-    floatingCursor = null;
-    savedCaret = null;
-  }
-
-  function repositionFloatingCursor() {
-    if (!savedCaret || !floatingCursor) return;
-    var range = document.createRange();
-    try {
-      range.setStart(savedCaret.node, savedCaret.offset);
-      range.collapse(true);
-    } catch (err) {
-      removeFloatingCursor();
-      return;
-    }
-    var rect = range.getBoundingClientRect();
-    var rects = range.getClientRects();
-    if (!rect.height && rects.length) rect = rects[0];
-    var fs = parseFloat(getComputedStyle(document.body).fontSize) || 13;
-    var h = rect.height > 2 ? rect.height : fs * 1.15;
-    var w = Math.max(fs * 0.6, 8);
-    floatingCursor.style.width = w + 'px';
-    floatingCursor.style.height = h + 'px';
-    floatingCursor.style.left = rect.left + 'px';
-    floatingCursor.style.top = rect.top + 'px';
-  }
-
-  function placeCursorAtClick(e) {
-    if (reduced) return;
-    if (e.target.closest('a[href]')) return;
-    if (e.target.closest('button')) return;
-
-    var range = getCaretRange(e.clientX, e.clientY);
-    if (range) {
-      saveCaretFromRange(range);
-      removeFloatingCursor();
-      floatingCursor = document.createElement('span');
-      floatingCursor.className = 'cursor floating';
-      document.body.appendChild(floatingCursor);
-      repositionFloatingCursor();
-    } else {
-      // Clicked on empty space — place cursor at click coordinates
-      removeFloatingCursor();
-      floatingCursor = document.createElement('span');
-      floatingCursor.className = 'cursor floating';
-      document.body.appendChild(floatingCursor);
-      var fs = parseFloat(getComputedStyle(document.body).fontSize) || 13;
-      floatingCursor.style.width = Math.max(fs * 0.6, 8) + 'px';
-      floatingCursor.style.height = (fs * 1.15) + 'px';
-      floatingCursor.style.left = e.clientX + 'px';
-      floatingCursor.style.top = e.clientY + 'px';
-      savedCaret = null;
-    }
-  }
-
-  document.addEventListener('click', placeCursorAtClick);
-
-  var scrollTick = 0;
-  function onScrollOrResize() {
-    if (!floatingCursor) return;
-    cancelAnimationFrame(scrollTick);
-    scrollTick = requestAnimationFrame(repositionFloatingCursor);
-  }
-  window.addEventListener('scroll', onScrollOrResize, true);
-  window.addEventListener('resize', onScrollOrResize);
 
   // --- Theme toggle ---
   var toggle = document.getElementById('themeToggle');
