@@ -104,6 +104,13 @@
     gap: 4px;
   }
 
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
   .label {
     font-size: 10px;
     letter-spacing: 0.2em;
@@ -261,7 +268,8 @@
     cursor: pointer;
     border-radius: 3px;
     transition: color 0.15s, border-color 0.15s;
-    align-self: flex-end;
+    flex-shrink: 0;
+    margin-top: 4px;
   }
 
   .theme-toggle:hover {
@@ -269,29 +277,11 @@
     border-color: var(--green);
   }
 
-  /* Footer */
-  .footer {
-    text-align: center;
-    font-size: 10px;
-    color: var(--fg-dim);
-    letter-spacing: 0.1em;
-    animation: fadeUp 0.6s 0.45s ease both;
-  }
-
-  .dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    vertical-align: middle;
-    margin: 0 6px;
-  }
 
   /* --- Mobile --- */
 
   @media (max-width: 480px) {
-    body { padding: 12px; }
+    body { padding: 12px; align-items: flex-start; padding-top: 24px; }
     .card {
       padding: 20px 16px;
       gap: 16px;
@@ -315,12 +305,11 @@
   /* --- Reduced motion --- */
 
   @media (prefers-reduced-motion: reduce) {
-    .card, .label, .name, .tagline, .qr-section, .links, .footer {
+    .card, .label, .name, .tagline, .qr-section, .links {
       animation: none;
       opacity: 1;
       transform: none;
     }
-    .dot { animation: none; opacity: 1; }
   }
 </style>
 <script>
@@ -331,10 +320,12 @@
 <body>
 
 <div class="card">
-  <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">light</button>
   <div class="header">
     <div class="label">&gt; Let's connect</div>
-    <div class="name">Utku <span>Arslan</span></div>
+    <div class="header-row">
+      <div class="name">Utku <span>Arslan</span></div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">light</button>
+    </div>
     <div class="tagline">// building things that matter</div>
   </div>
 
@@ -396,9 +387,6 @@
     <div class="qr-hint">scan to visit</div>
   </div>
 
-  <div class="footer">
-    <span class="dot"></span> open to connect
-  </div>
 </div>
 
 <script>
