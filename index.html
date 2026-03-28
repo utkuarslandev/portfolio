@@ -165,6 +165,7 @@
   .content.visible .d4 { animation-delay: 0.6s; }
   .content.visible .d5 { animation-delay: 0.8s; }
   .content.visible .d6 { animation-delay: 1.0s; }
+  .content.visible .d7 { animation-delay: 1.2s; }
 
   /* --- Experience --- */
 
@@ -192,6 +193,17 @@
   .now-list { list-style: none; padding: 0; }
   .now-list li { padding: 2px 0; }
   .now-list li::before { content: "→ "; color: var(--fg-dim); }
+  .now-sub {
+    list-style: none;
+    padding: 2px 0 0 18px;
+    margin: 0;
+  }
+  .now-sub li {
+    color: var(--fg-dim);
+    font-size: 12px;
+    padding: 1px 0;
+  }
+  .now-sub li::before { content: "· "; color: var(--fg-dim); }
 
   /* --- Quotes --- */
 
