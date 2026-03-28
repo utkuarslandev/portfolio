@@ -255,12 +255,9 @@
   }
   .link-btn.wa .icon-wrap { background: rgba(37,211,102,0.1); }
 
-  /* --- Theme toggle --- */
+  /* --- Theme toggle (inside card) --- */
 
   .theme-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
     background: none;
     border: 1px solid var(--border);
     color: var(--fg-dim);
@@ -270,7 +267,7 @@
     cursor: pointer;
     border-radius: 3px;
     transition: color 0.15s, border-color 0.15s;
-    z-index: 10;
+    align-self: flex-end;
   }
 
   .theme-toggle:hover {
@@ -303,6 +300,24 @@
     50% { opacity: 0.4; transform: scale(0.7); }
   }
 
+  /* --- Mobile --- */
+
+  @media (max-width: 480px) {
+    body { padding: 16px; }
+    .card {
+      padding: 28px 20px;
+      gap: 24px;
+      border-radius: 16px;
+    }
+    .name { font-size: 24px; }
+    .qr-wrap { padding: 12px; }
+    .qr-wrap img { width: 140px; height: 140px; }
+    .link-btn { padding: 12px 14px; gap: 12px; }
+    .icon-wrap { width: 32px; height: 32px; }
+    .icon-wrap svg { width: 16px; height: 16px; }
+    .links { gap: 8px; }
+  }
+
   /* --- Reduced motion --- */
 
   @media (prefers-reduced-motion: reduce) {
@@ -321,11 +336,10 @@
 </head>
 <body>
 
-<button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">light</button>
-
 <div class="card">
+  <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">light</button>
   <div class="header">
-    <div class="label">&#8599; Let's connect</div>
+    <div class="label">&gt; Let's connect</div>
     <div class="name">Utku<br><span>Arslan</span></div>
     <div class="tagline">// building things that matter</div>
   </div>
@@ -337,7 +351,7 @@
         alt="QR Code for utkuarslan.dev/links"
       />
     </div>
-    <div class="qr-hint">scan to visit utkuarslan.dev/links</div>
+    <div class="qr-hint">scan to visit</div>
   </div>
 
   <div class="links">
@@ -366,7 +380,7 @@
 
     <a class="link-btn" href="https://utkuarslan.dev" target="_blank" rel="noopener">
       <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--fg-dim)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       </div>
       <div class="link-info">
         <span class="link-name">Website</span>
@@ -381,7 +395,7 @@
       </div>
       <div class="link-info">
         <span class="link-name">WhatsApp</span>
-        <span class="link-val">+31 627 303 599</span>
+        <span class="link-val">+31 6 27303599</span>
       </div>
       <span class="link-arrow">&#8250;</span>
     </a>
